@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import Message,LabeledPrice,ContentType
 from dotenv import load_dotenv
 from app import keyboards as kb
 from app import database as db
@@ -38,15 +39,140 @@ async def admin_panel(message: types.Message):
         await message.reply("Я вас не понимаю")
       
    
-@dp.callback_query_handler()
-async def callback_query_keyboard(callback_query: types.CallbackQuery):
-    if callback_query.data == "month":
-        await bot.send_message(chat_id=callback_query.from_user.id,text="Вы выбрали подписку на месяц")
-    elif callback_query.data == "3month":
-        await bot.send_message(chat_id=callback_query.from_user.id,text="Вы выбрали подписку на 3 месяца")
-    elif callback_query.data == "year":
-        await bot.send_message(chat_id=callback_query.from_user.id,text="Вы выбрали подписку на год")
+@dp.callback_query_handler(text="month")
+async def order_month(message:Message):
+    await bot.send_invoice(
+        chat_id=message.from_user.id,
+        title='Покупка VPN',
+        description="Покупка впн на месяц",
+        payload = "Pyament through a bot",
+        provider_token='381764678:TEST:75091',
+        currency="rub",
+        prices=[
+            LabeledPrice(
+                label = 'VPN на месяц',
+                amount = 30000
+            ),
+        ],
+        max_tip_amount=5000,
+        suggested_tip_amounts=[1000,2000,3000,4000],
+        start_parameter='nzstcoder',
+        provider_data=None,
+        photo_url='https://assetsblog.bsbportal.com/wp-content/uploads/2022/08/What-is-VPN.jpg',
+        photo_height=450,
+        photo_size=100,
+        photo_width=800,
+        need_name=True,
+        need_phone_number=True,
+        need_email=True,
+        need_shipping_address=False,
+        send_phone_number_to_provider=False,
+        send_email_to_provider=False,
+        is_flexible=False,
+        disable_notification=False,
+        protect_content=False,
+        reply_to_message_id=None,
+        allow_sending_without_reply=True,
+        reply_markup=None,
         
+    )
+
+
+   
+@dp.callback_query_handler(text="3month")
+async def order_3month(message:Message):
+    await bot.send_invoice(
+        chat_id=message.from_user.id,
+        title='Покупка VPN',
+        description="Покупка впн на 3 месяца",
+        payload = "Pyament through a bot",
+        provider_token='381764678:TEST:75091',
+        currency="rub",
+        prices=[
+            LabeledPrice(
+                label = 'VPN на 3 месяца',
+                amount = 60000
+            ),
+        ],
+        max_tip_amount=5000,
+        suggested_tip_amounts=[1000,2000,3000,4000],
+        start_parameter='nzstcoder',
+        provider_data=None,
+        photo_url='https://assetsblog.bsbportal.com/wp-content/uploads/2022/08/What-is-VPN.jpg',
+        photo_height=450,
+        photo_size=100,
+        photo_width=800,
+        need_name=True,
+        need_phone_number=True,
+        need_email=True,
+        need_shipping_address=False,
+        send_phone_number_to_provider=False,
+        send_email_to_provider=False,
+        is_flexible=False,
+        disable_notification=False,
+        protect_content=False,
+        reply_to_message_id=None,
+        allow_sending_without_reply=True,
+        reply_markup=None,
+        
+    )
+    
+ 
+    
+@dp.callback_query_handler(text="year")
+async def order_year(message:Message):
+    await bot.send_invoice(
+        chat_id=message.from_user.id,
+        title='Покупка VPN',
+        description="Покупка впн на год",
+        payload = "Pyament through a bot",
+        provider_token='381764678:TEST:75091',
+        currency="rub",
+        prices=[
+            LabeledPrice(
+                label = 'VPN на год',
+                amount = 100000
+            ),
+        ],
+        max_tip_amount=5000,
+        suggested_tip_amounts=[1000,2000,3000,4000],
+        start_parameter='nzstcoder',
+        provider_data=None,
+        photo_url='https://assetsblog.bsbportal.com/wp-content/uploads/2022/08/What-is-VPN.jpg',
+        photo_height=450,
+        photo_size=100,
+        photo_width=800,
+        need_name=True,
+        need_phone_number=True,
+        need_email=True,
+        need_shipping_address=False,
+        send_phone_number_to_provider=False,
+        send_email_to_provider=False,
+        is_flexible=False,
+        disable_notification=False,
+        protect_content=False,
+        reply_to_message_id=None,
+        allow_sending_without_reply=True,
+        reply_markup=None,
+        
+    )
+    
+ 
+    
+@dp.pre_checkout_query_handler(lambda query :True)
+async def pre_checkout_query(pre_checkout_q:types.PreCheckoutQuery):
+    await bot.answer_pre_checkout_query(pre_checkout_q.id,ok=True)   
+   
+@dp.message_handler(content_types=ContentType.SUCCESSFUL_PAYMENT)
+async def succesful_payment(message: Message):
+    if message.successful_payment.total_amount // 100 == 300:
+        await message.answer("Вам будет выслан конфиг на месяц")
+    elif message.successful_payment.total_amount // 100 == 600:
+        await message.answer("Вам будет выслан конфиг на 3 месяца")
+    elif message.successful_payment.total_amount // 100 == 600:
+        await message.answer("Вам будет выслан конфиг на год")
+
+    
 @dp.message_handler()
 async def reply_on(message: types.Message):
     await message.reply("Я вас не понимаю")
