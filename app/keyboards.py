@@ -9,12 +9,12 @@ main_admin = ReplyKeyboardMarkup(resize_keyboard=True)
 main_admin.add("Купить").add("Инструкция пользования").add("Админ-панель")
 
 main_admin_panel = ReplyKeyboardMarkup(resize_keyboard=True)
-main_admin_panel.add("первый").add("второй").add("третий")
+main_admin_panel.add("Добавить сервер").add("Просмотреть пользователей").add("Назад")
 
 buy_variants = InlineKeyboardMarkup(row_width=1)
-buy_variants.add(InlineKeyboardButton(text="Купить на месяц(300руб)",callback_data="month"),
-                 InlineKeyboardButton(text="Купить на 3 месяца(600руб)",callback_data="3month"),
-                 InlineKeyboardButton(text="Купить на год(1000руб)",callback_data="year"),
+buy_variants.add(InlineKeyboardButton(text="Купить на месяц (300 руб)",callback_data="month"),
+                 InlineKeyboardButton(text="Купить на 3 месяца (600 руб)",callback_data="3month"),
+                 InlineKeyboardButton(text="Купить на год (1000 руб)",callback_data="year"),
                  ) 
 
 ''' buy_variants = ReplyKeyboardMarkup(resize_keyboard=True)
