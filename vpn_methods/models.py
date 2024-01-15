@@ -1,14 +1,13 @@
 import json
-from .constants import SERVER_URL
 
 
 class ConfigInbound:
-    def __init__(self, create_info):
+    def __init__(self, server_url, create_info):
         stream_settings = json.loads(create_info.get('streamSettings'))
         reality_settings = stream_settings.get('realitySettings')
 
         self.id = create_info.get('id')
-        self.url = SERVER_URL
+        self.url = server_url
         self.port = create_info.get('port')
         self.transmission = stream_settings.get('network')
         self.security = stream_settings.get('security')
@@ -21,8 +20,8 @@ class ConfigInbound:
 
 
 class ConfigClient:
-    def __init__(self, client_id, sub_id, flow, email, inbound_id):
-        self.url = SERVER_URL
+    def __init__(self, server_url, client_id, sub_id, flow, email, inbound_id):
+        self.url = server_url
         self.id = client_id
         self.sub_id = sub_id
         self.flow = flow
